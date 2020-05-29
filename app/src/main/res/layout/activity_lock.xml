@@ -17,8 +17,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="259dp"
-        android:layout_height="142dp"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/logo" />
     <TextView
@@ -31,7 +31,7 @@
         android:id="@+id/date3"/>
 
     <LinearLayout
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="480dp"
         android:orientation="vertical">
         <TextView
@@ -83,7 +83,7 @@
         <Button
             android:id="@+id/onBtn"
             android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:text="Turn On"
             android:background="@drawable/btn_bg"
@@ -92,7 +92,7 @@
         <Button
             android:id="@+id/offBtn"
             android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:text="Turn Off"
             android:background="@drawable/btn_bg"
@@ -101,7 +101,7 @@
         <Button
             android:id="@+id/discoverableBtn"
             android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:text="Discoverable"
             android:background="@drawable/btn_bg"
@@ -110,7 +110,7 @@
         <Button
             android:id="@+id/pairedBtn"
             android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:text="Get Paired Devices"
             android:background="@drawable/btn_bg"
@@ -120,7 +120,7 @@
 
         <TextView
             android:id="@+id/pairedTv"
-            android:layout_width="126dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:minWidth="200dp"
