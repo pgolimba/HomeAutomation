@@ -3,6 +3,7 @@ package com.ti.homeautomation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,7 +12,15 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
+
 
 public class LightActivity extends AppCompatActivity {
 
@@ -29,13 +38,21 @@ public class LightActivity extends AppCompatActivity {
         aSwitch=findViewById(R.id.switch1);
         back=findViewById(R.id.backicon);
 
+
+
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(aSwitch.isChecked()){
-                    textStare.setText("Lumina este aprinsă!");
-                }else{
-                    textStare.setText("Lumina este stinsă!");
+                try {
+                    if (aSwitch.isChecked()) {
+                        textStare.setText("Lumina este aprinsă!");
+                        LightActivityInsert(1);
+                    } else {
+                        textStare.setText("Lumina este stinsă!");
+                        LightActivityInsert(0);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -71,5 +88,29 @@ public class LightActivity extends AppCompatActivity {
         };
         t.start();
 
+    }
+
+    public boolean LightActivityInsert(int stare) throws SQLException {
+        Connection sql;
+        boolean ok = false;
+        sql = DbConnection.connectionclass();
+
+
+        String query = "INSERT INTO dbo.lumini VALUES (?, ?, ?, ?)";
+        PreparedStatement pstmt = sql.prepareStatement(query);
+        pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
+        pstmt.setString(2, "admin");
+        pstmt.setInt(3, stare);
+        pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+
+        int rows = pstmt.executeUpdate();
+
+        if(rows > 0) {
+            ok = true;
+        }
+
+        sql.close();
+
+        return ok;
     }
 }
