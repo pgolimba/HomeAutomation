@@ -31,8 +31,8 @@
         android:id="@+id/date3"/>
 
     <LinearLayout
-        android:layout_width="380dp"
-        android:layout_height="418dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
@@ -43,18 +43,19 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Temperatura actuală:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tempactuala"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
+            android:layout_width="150dp"
             android:layout_height="33dp"
             android:layout_gravity="center">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="200dp"
-                android:layout_height="28dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -65,18 +66,19 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:text="Temperatura dorită:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tempdorita"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
+            android:layout_width="150dp"
             android:layout_height="33dp"
             android:layout_gravity="center">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="200dp"
-                android:layout_height="28dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -84,7 +86,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp">
 
             <Button
@@ -123,7 +125,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Programul dorit:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <Spinner
             android:id="@+id/programuldorit"
