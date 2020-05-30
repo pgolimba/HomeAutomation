@@ -24,6 +24,7 @@ import java.sql.Timestamp;
 
 public class LightActivity extends AppCompatActivity {
 
+    private Profil profil = Profil.getInstance();
     TextView textStare;
     Switch aSwitch;
     ImageView back;
@@ -38,7 +39,19 @@ public class LightActivity extends AppCompatActivity {
         aSwitch=findViewById(R.id.switch1);
         back=findViewById(R.id.backicon);
 
-
+        try {
+            int st_act=LightActivitySelect();
+            if(st_act==1) {
+                aSwitch.setChecked(true);
+                textStare.setText("Lumina este aprinsă!");
+            }
+            else {
+                aSwitch.setChecked(false);
+                textStare.setText("Lumina este stinsă!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -46,6 +59,7 @@ public class LightActivity extends AppCompatActivity {
                 try {
                     if (aSwitch.isChecked()) {
                         textStare.setText("Lumina este aprinsă!");
+                        String input1 = textStare.getText().toString();
                         LightActivityInsert(1);
                     } else {
                         textStare.setText("Lumina este stinsă!");
@@ -60,8 +74,7 @@ public class LightActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LightActivity.this,ControlActivity.class);
-                startActivity(intent);
+
             }
         });
 
@@ -89,6 +102,30 @@ public class LightActivity extends AppCompatActivity {
         t.start();
 
     }
+    public int LightActivitySelect() throws SQLException {
+        Connection con = DbConnection.connectionclass();
+        Statement sql;
+        sql = con.createStatement();
+        int ok = -1;
+
+        ResultSet rs;
+        rs = sql.executeQuery("SELECT TOP 1 * FROM dbo.lumini ORDER BY Id DESC");
+
+        //PreparedStatement pstmt = sql.prepareStatement(query);
+        // pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
+        //pstmt.setString(1, profil.username);
+
+       // rs = sql.executeQuery();
+
+        if(rs.next()) {
+
+            ok = rs.getInt("stare");
+        }
+
+        sql.close();
+
+        return ok;
+    }
 
     public boolean LightActivityInsert(int stare) throws SQLException {
         Connection sql;
@@ -96,12 +133,14 @@ public class LightActivity extends AppCompatActivity {
         sql = DbConnection.connectionclass();
 
 
-        String query = "INSERT INTO dbo.lumini VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO dbo.lumini  VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = sql.prepareStatement(query);
         pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
-        pstmt.setString(2, "admin");
-        pstmt.setInt(3, stare);
-        pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+        pstmt.setString(2, profil.username);
+        //pstmt.setString(2, "stare");
+          pstmt.setInt(3, stare);
+          pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+//        pstmt.setDate(5, new java.sql.Date(System.currentTimeMillis()));
 
         int rows = pstmt.executeUpdate();
 

@@ -2,6 +2,7 @@ package com.ti.homeautomation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,8 @@ public class TemperatureActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.program));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner2.setAdapter(myAdapter);
+
+        //mySpinner2.getChildAt(0).setOnClickListener();
 
         //Intoarcerea in meniul principal de control
         back2.setOnClickListener(new View.OnClickListener() {

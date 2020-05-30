@@ -46,7 +46,6 @@
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tempactuala"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="300dp"
             android:layout_height="33dp"
@@ -68,7 +67,6 @@
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tempdorita"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="300dp"
             android:layout_height="33dp"
@@ -88,7 +86,6 @@
             android:layout_marginTop="15dp">
 
             <Button
-                android:id="@+id/btn_settemperatura"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
@@ -98,7 +95,6 @@
                 android:textColor="@color/colorAccent" />
 
             <Button
-                android:id="@+id/btn_anulare1"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
@@ -138,7 +134,6 @@
             android:layout_marginTop="10dp">
 
             <Button
-                android:id="@+id/btn_setprogram"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
@@ -148,7 +143,6 @@
                 android:textColor="@color/colorAccent" />
 
             <Button
-                android:id="@+id/btn_anulare2"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"

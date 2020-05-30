@@ -13,6 +13,8 @@ public class Profil {
 
     private static Profil profil;
 
+    public String username;
+
     public static synchronized Profil getInstance()
     {
         if(profil==null)
@@ -93,6 +95,10 @@ public class Profil {
         }
 
         con.close();
+
+        if(ret) {
+            username = userID;
+        }
 
         return ret;
 

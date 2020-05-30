@@ -68,7 +68,6 @@
             android:layout_marginTop="30dp">
 
             <Button
-                android:id="@+id/btn_genrapoarte"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
@@ -78,7 +77,6 @@
                 android:textColor="@color/colorAccent" />
 
             <Button
-                android:id="@+id/btn_anularegenerare"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
