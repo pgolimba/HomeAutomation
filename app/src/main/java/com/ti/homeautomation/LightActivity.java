@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 
 public class LightActivity extends AppCompatActivity {
@@ -140,13 +140,18 @@ public class LightActivity extends AppCompatActivity {
         boolean ok = false;
         sql = DbConnection.connectionclass();
 
+        java.util.Calendar calendar = Calendar.getInstance();
+        java.util.Date currentTime = calendar.getTime();
+
+        long time = currentTime.getTime();
+
 
         String query = "INSERT INTO dbo.lumini VALUES (?, ?, ?, ?)";
         PreparedStatement pstmt = sql.prepareStatement(query);
         pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
         pstmt.setString(2, profil.username);
         pstmt.setInt(3, stare);
-        pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+        pstmt.setTimestamp(4, new Timestamp(time));
 
         int rows = pstmt.executeUpdate();
 
