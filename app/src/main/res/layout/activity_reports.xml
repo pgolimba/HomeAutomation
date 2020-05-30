@@ -18,7 +18,7 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="382dp"
+        android:layout_width="match_parent"
         android:layout_height="190dp"
         app:srcCompat="@drawable/logo" />
 
@@ -32,8 +32,8 @@
         android:id="@+id/date1"/>
 
     <LinearLayout
-        android:layout_width="382dp"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
@@ -61,15 +61,24 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp" />
+        <Button
+            android:id="@+id/btn_genrapoarte"
+            android:layout_width="150dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_bg"
+            android:text="Generare"
+            android:textColor="@color/colorAccent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!--<LinearLayout
+            android:layout_width="315dp"
             android:layout_height="50dp"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center">
 
             <Button
-                android:id="@+id/btn_genrapoarte"
-                android:layout_width="181dp"
+                android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
@@ -78,8 +87,7 @@
                 android:textColor="@color/colorAccent" />
 
             <Button
-                android:id="@+id/btn_anularegenerare"
-                android:layout_width="181dp"
+                android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
@@ -87,7 +95,7 @@
                 android:background="@drawable/btn_bg"
                 android:text="Anulare"
                 android:textColor="@color/colorAccent" />
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
 </LinearLayout>

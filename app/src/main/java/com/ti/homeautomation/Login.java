@@ -37,7 +37,6 @@ public class Login extends AppCompatActivity {
     TextInputLayout username,password;
     TextView Info;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +48,9 @@ public class Login extends AppCompatActivity {
         username=findViewById(R.id.username);
         password=findViewById(R.id.password);
         loginBtn=findViewById(R.id.btn_login);
-        Info=findViewById(R.id.textInfo);
+        //Info=findViewById(R.id.textInfo);
 
-        Info.setText("-");
+        //Info.setText("-");
 
        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
