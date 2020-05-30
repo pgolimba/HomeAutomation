@@ -38,8 +38,6 @@ public class LightActivity extends AppCompatActivity {
         aSwitch=findViewById(R.id.switch1);
         back=findViewById(R.id.backicon);
 
-
-
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

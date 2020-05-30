@@ -46,7 +46,15 @@
             android:textStyle="bold"
             android:layout_gravity="center"/>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
+            android:id="@+id/tempactuala"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+
+        <!--<com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tempactuala"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="150dp"
@@ -58,13 +66,13 @@
                 android:layout_height="wrap_content"
                 android:inputType="text" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>-->
 
         <TextView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="Temperatura dorită:"
             android:textStyle="bold"
             android:layout_gravity="center"/>
@@ -125,6 +133,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
             android:text="Programul dorit:"
             android:textStyle="bold"
             android:gravity="center"/>
@@ -135,8 +144,17 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp" />
+        <Button
+            android:id="@+id/btn_setprogram"
+            android:layout_width="150dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_bg"
+            android:text="Setează   programul"
+            android:textColor="@color/colorAccent" />
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:layout_width="315dp"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
@@ -162,7 +180,7 @@
                 android:background="@drawable/btn_bg"
                 android:text="Anulare"
                 android:textColor="@color/colorAccent" />
-        </LinearLayout>
+        </LinearLayout>-->
 
 
     </LinearLayout>
