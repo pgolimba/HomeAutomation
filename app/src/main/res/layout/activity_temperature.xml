@@ -77,25 +77,21 @@
             android:textStyle="bold"
             android:layout_gravity="center"/>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
             android:id="@+id/tempdorita"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="150dp"
-            android:layout_height="33dp"
-            android:layout_gravity="center">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:text="" />
 
 
         <LinearLayout
             android:layout_width="315dp"
             android:layout_height="67dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center">
 
             <Button

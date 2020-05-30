@@ -3,19 +3,26 @@ package com.ti.homeautomation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +33,7 @@ public class TemperatureActivity extends AppCompatActivity {
     ImageView back2;
     Spinner mySpinner2;
     TextView tempActuala;
-    TextInputLayout tempDorita;
+    EditText tempDorita;
     Button setTemp,anulareTemp,setProgram;
 
 
@@ -52,6 +59,7 @@ public class TemperatureActivity extends AppCompatActivity {
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner2.setAdapter(myAdapter);
 
+
         //Intoarcerea in meniul principal de control
         back2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +71,26 @@ public class TemperatureActivity extends AppCompatActivity {
         anulareTemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempDorita.getEditText().setText("");
+                tempDorita.setText("");
+            }
+        });
+
+        setTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Connection sql = DbConnection.connectionclass();
+                Float temp = Float.valueOf(tempDorita.getText().toString());
+                try {
+                    if(TemperatureActivityInsert(temp)) {
+                        Toast.makeText(getApplicationContext(), "Temperatura a fost modificată cu succes!", Toast.LENGTH_SHORT).show();
+                        //tempActuala.setText(temp + " °C");
+                    }
+                    else Toast.makeText(getApplicationContext(), "Temperatura nu s-a modificat!",Toast.LENGTH_SHORT).show();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
 
@@ -110,16 +137,15 @@ public class TemperatureActivity extends AppCompatActivity {
     public boolean TemperatureActivityInsert (Float temp) throws SQLException {
         Connection sql;
         boolean ok = false;
-        ResultSet rs = null;
         sql = DbConnection.connectionclass();
-        Statement st = sql.createStatement();
+
+
         String query = ("INSERT INTO dbo.temp_app VALUES (?,?,?,?)");
         PreparedStatement pstmt = sql.prepareStatement(query);
         pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
-        pstmt.setString(2, "admin");
+        pstmt.setString(2,"admin");
         pstmt.setFloat(3,temp);
-        pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
-
+        pstmt.setDate(4, new Date(System.currentTimeMillis()));
         int rows = pstmt.executeUpdate();
 
         if(rows > 0) {

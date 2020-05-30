@@ -3,14 +3,17 @@ package com.ti.homeautomation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -27,9 +30,10 @@ public class LightActivity extends AppCompatActivity {
     TextView textStare;
     Switch aSwitch;
     ImageView back;
+    Button btnSalvare;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_light);
@@ -37,12 +41,15 @@ public class LightActivity extends AppCompatActivity {
         textStare=findViewById(R.id.textstarelumini);
         aSwitch=findViewById(R.id.switch1);
         back=findViewById(R.id.backicon);
+        btnSalvare=findViewById(R.id.btnsalvare);
+
 
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
                     if (aSwitch.isChecked()) {
+
                         textStare.setText("Lumina este aprinsă!");
                         LightActivityInsert(1);
                     } else {
@@ -54,6 +61,13 @@ public class LightActivity extends AppCompatActivity {
                 }
             }
         });
+        btnSalvare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
