@@ -30,6 +30,8 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
 public class TemperatureActivity extends AppCompatActivity {
+
+    private Profil profil = Profil.getInstance();
     ImageView back2;
     Spinner mySpinner2;
     TextView tempActuala,programAles;
@@ -166,7 +168,7 @@ public class TemperatureActivity extends AppCompatActivity {
         String query = ("INSERT INTO dbo.temp_app VALUES (?,?,?,?)");
         PreparedStatement pstmt = sql.prepareStatement(query);
         pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
-        pstmt.setString(2,"admin");
+        pstmt.setString(2,profil.username);
         pstmt.setFloat(3,temp);
         pstmt.setDate(4, new Date(System.currentTimeMillis()));
         int rows = pstmt.executeUpdate();
