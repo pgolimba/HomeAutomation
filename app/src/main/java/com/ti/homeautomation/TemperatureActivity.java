@@ -32,9 +32,10 @@ import java.text.SimpleDateFormat;
 public class TemperatureActivity extends AppCompatActivity {
     ImageView back2;
     Spinner mySpinner2;
-    TextView tempActuala;
+    TextView tempActuala,programAles;
     EditText tempDorita;
     Button setTemp,anulareTemp,setProgram;
+
 
 
 
@@ -51,6 +52,8 @@ public class TemperatureActivity extends AppCompatActivity {
         setTemp=findViewById(R.id.btn_settemperatura);
         anulareTemp=findViewById(R.id.btn_anulare1);
         setProgram=findViewById(R.id.btn_setprogram);
+        programAles=findViewById(R.id.progales);
+
 
 
         //Alegerea programului
@@ -58,6 +61,27 @@ public class TemperatureActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.program));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner2.setAdapter(myAdapter);
+
+        mySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position==0){
+                    programAles.setText("A fost selectat programul 'Weekend'!");
+                }
+                if (position == 1) {
+                    programAles.setText("A fost selectat programul 'Concediu'!");
+                }
+                if(position == 2){
+                    programAles.setText("A fost selectat programul 'Zi de lucru'!");
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         //Intoarcerea in meniul principal de control
@@ -135,9 +159,8 @@ public class TemperatureActivity extends AppCompatActivity {
         t.start();
         };
     public boolean TemperatureActivityInsert (Float temp) throws SQLException {
-        Connection sql;
+        Connection sql = DbConnection.connectionclass();
         boolean ok = false;
-        sql = DbConnection.connectionclass();
 
 
         String query = ("INSERT INTO dbo.temp_app VALUES (?,?,?,?)");
