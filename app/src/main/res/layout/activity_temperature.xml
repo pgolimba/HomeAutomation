@@ -31,9 +31,9 @@
         android:id="@+id/date3"/>
 
     <LinearLayout
-        android:layout_width="380dp"
-        android:layout_height="418dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
@@ -43,49 +43,59 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Temperatura actuală:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
+            android:id="@+id/tempactuala"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+
+        <!--<com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tempactuala"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
+            android:layout_width="150dp"
             android:layout_height="33dp"
             android:layout_gravity="center">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="200dp"
-                android:layout_height="28dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="text" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>-->
 
         <TextView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="Temperatura dorită:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
-            android:layout_height="33dp"
-            android:layout_gravity="center">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="200dp"
-                android:layout_height="28dp"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <EditText
+            android:id="@+id/tempdorita"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:text="" />
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp">
+            android:layout_width="315dp"
+            android:layout_height="67dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center">
 
             <Button
+                android:id="@+id/btn_settemperatura"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
@@ -95,6 +105,7 @@
                 android:textColor="@color/colorAccent" />
 
             <Button
+                android:id="@+id/btn_anulare1"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
@@ -109,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:text="Setare program"
             android:textSize="18dp"
             android:textStyle="bold|italic" />
@@ -118,8 +129,10 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
             android:text="Programul dorit:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <Spinner
             android:id="@+id/programuldorit"
@@ -127,22 +140,34 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp" />
+        <Button
+            android:id="@+id/btn_setprogram"
+            android:layout_width="150dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_bg"
+            android:text="Setează   programul"
+            android:textColor="@color/colorAccent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp">
+       <!-- <LinearLayout
+            android:layout_width="315dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center">
 
             <Button
+                android:id="@+id/btn_setprogram"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/btn_bg"
-                android:text="Setează    programul"
+                android:text="Setează   programul"
                 android:textColor="@color/colorAccent" />
 
             <Button
+                android:id="@+id/btn_anulare2"
                 android:layout_width="150dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
@@ -151,7 +176,7 @@
                 android:background="@drawable/btn_bg"
                 android:text="Anulare"
                 android:textColor="@color/colorAccent" />
-        </LinearLayout>
+        </LinearLayout>-->
 
 
     </LinearLayout>

@@ -2,21 +2,40 @@ package com.ti.homeautomation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.OutputStreamWriter;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
 public class TemperatureActivity extends AppCompatActivity {
     ImageView back2;
     Spinner mySpinner2;
+    TextView tempActuala;
+    EditText tempDorita;
+    Button setTemp,anulareTemp,setProgram;
+
 
 
     @Override
@@ -27,6 +46,12 @@ public class TemperatureActivity extends AppCompatActivity {
 
         back2=findViewById(R.id.backicon2);
         mySpinner2=findViewById(R.id.programuldorit);
+        tempActuala=findViewById(R.id.tempactuala);
+        tempDorita=findViewById(R.id.tempdorita);
+        setTemp=findViewById(R.id.btn_settemperatura);
+        anulareTemp=findViewById(R.id.btn_anulare1);
+        setProgram=findViewById(R.id.btn_setprogram);
+
 
         //Alegerea programului
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(TemperatureActivity.this,
@@ -34,7 +59,6 @@ public class TemperatureActivity extends AppCompatActivity {
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner2.setAdapter(myAdapter);
 
-        //mySpinner2.getChildAt(0).setOnClickListener();
 
         //Intoarcerea in meniul principal de control
         back2.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +68,48 @@ public class TemperatureActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        anulareTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tempDorita.setText("");
+            }
+        });
+
+        setTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Connection sql = DbConnection.connectionclass();
+                Float temp = Float.valueOf(tempDorita.getText().toString());
+                try {
+                    if(TemperatureActivityInsert(temp)) {
+                        Toast.makeText(getApplicationContext(), "Temperatura a fost modificată cu succes!", Toast.LENGTH_SHORT).show();
+                        //tempActuala.setText(temp + " °C");
+                    }
+                    else Toast.makeText(getApplicationContext(), "Temperatura nu s-a modificat!",Toast.LENGTH_SHORT).show();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+        try {
+            Connection sql;
+            ResultSet rs = null;
+            sql = DbConnection.connectionclass();
+            Statement st = sql.createStatement();
+            String query = ("SELECT TOP 1 * FROM dbo.temp_app ORDER BY Id DESC");
+            rs = st.executeQuery(query);
+            if (rs.next()) {
+                String temp = rs.getString("SetedTemp");
+                tempActuala.setText(temp+" °C");
+                sql.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         //Data si timp
         Thread t = new Thread() {
@@ -67,5 +133,27 @@ public class TemperatureActivity extends AppCompatActivity {
             }
         };
         t.start();
+        };
+    public boolean TemperatureActivityInsert (Float temp) throws SQLException {
+        Connection sql;
+        boolean ok = false;
+        sql = DbConnection.connectionclass();
+
+
+        String query = ("INSERT INTO dbo.temp_app VALUES (?,?,?,?)");
+        PreparedStatement pstmt = sql.prepareStatement(query);
+        pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
+        pstmt.setString(2,"admin");
+        pstmt.setFloat(3,temp);
+        pstmt.setDate(4, new Date(System.currentTimeMillis()));
+        int rows = pstmt.executeUpdate();
+
+        if(rows > 0) {
+            ok = true;
+        }
+
+        sql.close();
+
+        return ok;
     }
 }
