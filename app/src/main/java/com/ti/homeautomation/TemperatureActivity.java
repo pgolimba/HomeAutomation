@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.DataInput;
 import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.Date;
@@ -27,9 +29,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class TemperatureActivity extends AppCompatActivity {
+
+    private Profil profil = Profil.getInstance();
     ImageView back2;
     Spinner mySpinner2;
     TextView tempActuala,programAles;
@@ -162,13 +168,18 @@ public class TemperatureActivity extends AppCompatActivity {
         Connection sql = DbConnection.connectionclass();
         boolean ok = false;
 
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date currentTime = calendar.getTime();
+
+        long time = currentTime.getTime();
+
 
         String query = ("INSERT INTO dbo.temp_app VALUES (?,?,?,?)");
         PreparedStatement pstmt = sql.prepareStatement(query);
         pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
-        pstmt.setString(2,"admin");
+        pstmt.setString(2,profil.username);
         pstmt.setFloat(3,temp);
-        pstmt.setDate(4, new Date(System.currentTimeMillis()));
+        pstmt.setTimestamp(4,new Timestamp(time));
         int rows = pstmt.executeUpdate();
 
         if(rows > 0) {
