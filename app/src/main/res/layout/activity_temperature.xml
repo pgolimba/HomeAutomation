@@ -33,7 +33,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
@@ -85,9 +85,10 @@
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_width="315dp"
+            android:layout_height="67dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center">
 
             <Button
                 android:id="@+id/btn_settemperatura"
@@ -115,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:text="Setare program"
             android:textSize="18dp"
             android:textStyle="bold|italic" />
@@ -136,9 +137,10 @@
             android:layout_marginTop="10dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp">
+            android:layout_width="315dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center">
 
             <Button
                 android:id="@+id/btn_setprogram"
@@ -147,7 +149,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/btn_bg"
-                android:text="Setează    programul"
+                android:text="Setează   programul"
                 android:textColor="@color/colorAccent" />
 
             <Button
