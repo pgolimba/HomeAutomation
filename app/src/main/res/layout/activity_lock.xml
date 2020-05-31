@@ -1,133 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LockActivity"
-    android:orientation="vertical"
-    android:background="@drawable/bg"
-    android:padding="20dp">
-    <ImageView
-        android:id="@+id/backicon3"
-        android:layout_width="70dp"
-        android:layout_height="39dp"
-        android:layout_gravity="left"
-        android:src="@drawable/back" />
+    tools:context=".LockActivity">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/logo" />
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:layout_marginTop="5dp"
-        android:textStyle="italic|bold"
-        android:gravity="center"
-        android:id="@+id/date3"/>
+        android:layout_marginStart="152dp"
+        android:layout_marginLeft="152dp"
+        android:layout_marginBottom="696dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/zavor"
-            android:layout_width="188dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="10dp"
-            android:textSize="15dp"
-            android:text="Stare Zavor" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
-        <Switch
-            android:id="@+id/switch2"
-            android:layout_width="258dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Starea actuală:"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/textstarezavor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="15dp"
-            android:gravity="left"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/statusBluetoothTv"
-            android:layout_width="343dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
-            android:text=""
-            android:layout_gravity="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
-        <!--Bluetooth icon (on/off)-->
-        <!--On Button-->
-
-        <ImageView
-            android:id="@+id/bluetoothIv"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:id="@+id/onBtn"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:text="Turn On"
-            android:background="@drawable/btn_bg"
-            android:layout_gravity="center"/>
-        <!--Off btn-->
-        <Button
-            android:id="@+id/offBtn"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:text="Turn Off"
-            android:background="@drawable/btn_bg"
-            android:layout_gravity="center"/>
-        <!--Discoverable button-->
-        <Button
-            android:id="@+id/discoverableBtn"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:text="Discoverable"
-            android:background="@drawable/btn_bg"
-            android:layout_gravity="center"/>
-        <!--Get list of paired devices button-->
-        <Button
-            android:id="@+id/pairedBtn"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:text="Get Paired Devices"
-            android:background="@drawable/btn_bg"
-            android:layout_gravity="center"/>
-        <!--Show paired devices here-->
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="411dp"
+        android:layout_height="634dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        tools:ignore="UnknownId" />
 
 
-        <TextView
-            android:id="@+id/pairedTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:minWidth="200dp"
-            android:text=""
-            android:textColor="@color/colorAccent" />
 
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
