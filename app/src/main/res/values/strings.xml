@@ -1,15 +1,17 @@
 <resources>
     <string name="app_name">HomeAutomation</string>
 
-    <string-array name="program">
-        <item>Weekend</item>
-        <item>Concediu</item>
-        <item>Zi de lucru</item>
-    </string-array>
 
     <string-array name="rapoarte">
         <item>Raport pentru acces</item>
         <item>Raport de temperatura</item>
         <item>Raport de lumini</item>
+    </string-array>
+
+    <string-array name="program">
+        <item>Alegeți programul dorit</item>
+        <item>Weekend</item>
+        <item>Concediu</item>
+        <item>Zi de lucru</item>
     </string-array>
 </resources>
