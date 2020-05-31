@@ -14,6 +14,7 @@ public class Profil {
     private static Profil profil;
 
     public String username;
+    public String password;
 
     public static synchronized Profil getInstance()
     {
@@ -97,7 +98,8 @@ public class Profil {
         con.close();
 
         if(ret) {
-            username = userID;
+            this.username = userID;
+            this.password = password;
         }
 
         return ret;

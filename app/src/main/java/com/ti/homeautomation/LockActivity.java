@@ -16,8 +16,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +40,7 @@ public class LockActivity extends AppCompatActivity {
     private TextView titleTextView;
     private ProgressBar progressCircle;
     private ListView listView;
+    private Switch aSwitch;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket mBTSocket;
     private Handler mHandler; // Our main handler that will receive callback notifications
@@ -51,6 +53,7 @@ public class LockActivity extends AppCompatActivity {
     private UUID MY_UUID = null;
     private UUID HARDCODED_UID = new UUID(-0x121074568629b532L, -0x5c37d8232ae2de13L);
 
+    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,7 @@ public class LockActivity extends AppCompatActivity {
         titleTextView = (TextView) findViewById(R.id.textViewTitle);
         progressCircle = (ProgressBar) findViewById(R.id.progressBar);
         listView = (ListView) findViewById(R.id.listView);
+        aSwitch = (Switch) findViewById(R.id.door);
         getUUID();
 
         mHandler = new Handler() {
@@ -75,14 +79,33 @@ public class LockActivity extends AppCompatActivity {
                 if (msg.what == CONNECTING_STATUS) {
                     if (msg.arg1 == 1) {
                         Toast.makeText(LockActivity.this, "Connected to Device: " + (String) (msg.obj) + "\nSending test message", Toast.LENGTH_LONG).show();
-                        mConnectThread.write("1");
+                        listView.setVisibility(View.GONE);
+                        aSwitch.setVisibility(View.VISIBLE);
                     }
                     else
                         Toast.makeText(LockActivity.this, "Connection Failed", Toast.LENGTH_LONG).show();
                 }
             }
         };
+
         bluetoothSetup();
+
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (aSwitch.isChecked()) {
+                    mConnectThread.setDoorRequest(true);
+                } else {
+                    mConnectThread.setDoorRequest(false);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mConnectThread.cancel();
     }
 
     protected void DealWithMessage(String messageString) {
@@ -237,14 +260,6 @@ public class LockActivity extends AppCompatActivity {
                         if(!mBTSocket.isConnected()) {
                             throw new IOException();
                         }
-//                        Class<?> clazz = device.getClass();
-//                        Class<?>[] paramTypes = new Class<?>[] {Integer.TYPE};
-
-//                        Method m = clazz.getMethod("createRfcommSocket", paramTypes);
-//                        Object[] params = new Object[] {Integer.valueOf(1)};
-
-//                        mBTSocket = (BluetoothSocket) m.invoke(device, params);
-//                        mBTSocket.connect();
                         Log.d(TAG, "Connected to socket");
                     } catch (Exception e) {
                         Log.e(TAG, "Failed connecting to socket");
@@ -253,16 +268,13 @@ public class LockActivity extends AppCompatActivity {
                         try {
                             fail = true;
                             mBTSocket.close();
-                            mHandler.obtainMessage(CONNECTING_STATUS, -1, -1)
-                                    .sendToTarget();
                         } catch (IOException e2) {
                             Log.e(TAG, "Failed closing socket");
                         }
                     }
-                    if(fail == false) {
+                    if (!fail) {
                         mConnectThread = new ConnectThread(mBTSocket);
                         mConnectThread.start();
-
                         mHandler.obtainMessage(CONNECTING_STATUS, 1, -1, name)
                                 .sendToTarget();
                     }
@@ -271,32 +283,13 @@ public class LockActivity extends AppCompatActivity {
         }
     }
 
-    private void sendMessage(OutputStream os, char message) {
-        try {
-            os.write(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void doSocketStuff(BluetoothSocket socket) {
-        OutputStream os;
-        InputStream is;
-        try {
-            os = socket.getOutputStream();
-            is = socket.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        Log.d(TAG, "Sending a 1");
-        sendMessage(os, '1');
-    }
-
     private class ConnectThread extends Thread {
+        private static final String TAG = "ConnectThread";
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
+        private volatile boolean doorRequest, doorState;
+        private Profil profil = Profil.getInstance();
 
         public ConnectThread(BluetoothSocket socket) {
             mmSocket = socket;
@@ -308,49 +301,79 @@ public class LockActivity extends AppCompatActivity {
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
         }
 
         /* Call this from the main activity to send data to the remote device */
-        public void write(String input) {
-            input = "1";
+        private void write(String input) {
             byte[] bytes = input.getBytes();           //converts entered String into bytes
             try {
                 mmOutStream.write(bytes);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
+        }
+
+        private String read(int len) {
+            byte[] bytes = new byte[len];
+            int n = 0;
+
+            try {
+                n = mmInStream.read(bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new String(bytes);
+        }
+
+        public void setDoorRequest(boolean stare) {
+            doorRequest = true;
+            doorState = stare;
+        }
+
+        public boolean getDoorState() {
+            return doorState;
         }
 
         /* Call this from the main activity to shutdown the connection */
         public void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         }
 
         public void run() {
-            byte[] buffer = new byte[1024];  // buffer store for the stream
-            int bytes; // bytes returned from read()
+            String resp;
+            boolean stareUsa = false;
+
+//            write("LOGIN_REQUEST#" + profil.username  + "#"+ profil.password + "#");
+//            resp = read(20);
+
+//            write("GET_DATA#DOOR#STATE#TIMEOUT#" + profil.username);
+//            resp = read(1);
+//            stareUsa = (Integer.parseInt(resp) != 0);
+
+            Log.d(TAG, "Stare usa");
+            aSwitch.setChecked(stareUsa);
             // Keep listening to the InputStream until an exception occurs
             while (true) {
-                try {
-                    // Read from the InputStream
-                    bytes = mmInStream.available();
-                    if(bytes != 0) {
-                        buffer = new byte[1024];
-                        SystemClock.sleep(100); //pause and wait for rest of data. Adjust this depending on your sending speed.
-                        bytes = mmInStream.available(); // how many bytes are ready to be read?
-                        bytes = mmInStream.read(buffer, 0, bytes); // record how many bytes we actually read
-                        mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
-                                .sendToTarget(); // Send the obtained bytes to the UI activity
+                if (doorRequest) {
+                    if (doorState) {
+//                        write("#SET_DOOR#OPEN#");
+//                        resp = read(20);
+                        Log.d(TAG, "Door must open");
+                    } else {
+//                        write("#SET_DOOR#CLOSE#");
+//                        resp = read(25);
+                        Log.d(TAG, "Door must close");
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                    break;
+                    doorRequest = false;
                 }
+                SystemClock.sleep(100);
             }
         }
     }
