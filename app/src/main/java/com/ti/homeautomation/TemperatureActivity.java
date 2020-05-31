@@ -38,7 +38,7 @@ public class TemperatureActivity extends AppCompatActivity {
     private Profil profil = Profil.getInstance();
     ImageView back2;
     Spinner mySpinner2;
-    TextView tempActuala,programAles;
+    TextView tempActuala;
     EditText tempDorita;
     Button setTemp,anulareTemp,setProgram;
 
@@ -58,7 +58,6 @@ public class TemperatureActivity extends AppCompatActivity {
         setTemp=findViewById(R.id.btn_settemperatura);
         anulareTemp=findViewById(R.id.btn_anulare1);
         setProgram=findViewById(R.id.btn_setprogram);
-        programAles=findViewById(R.id.progales);
 
 
 
@@ -67,27 +66,6 @@ public class TemperatureActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.program));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner2.setAdapter(myAdapter);
-
-        mySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
-                    programAles.setText("A fost selectat programul 'Weekend'!");
-                }
-                if (position == 1) {
-                    programAles.setText("A fost selectat programul 'Concediu'!");
-                }
-                if(position == 2){
-                    programAles.setText("A fost selectat programul 'Zi de lucru'!");
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
 
         //Intoarcerea in meniul principal de control
@@ -174,12 +152,12 @@ public class TemperatureActivity extends AppCompatActivity {
         long time = currentTime.getTime();
 
 
-        String query = ("INSERT INTO dbo.temp_app VALUES (?,?,?,?)");
+        String query = ("INSERT INTO dbo.temp_app(UserId, SetedTemp, DateTime) VALUES (?,?,?)");
         PreparedStatement pstmt = sql.prepareStatement(query);
-        pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
-        pstmt.setString(2,profil.username);
-        pstmt.setFloat(3,temp);
-        pstmt.setTimestamp(4,new Timestamp(time));
+        //pstmt.setInt(1, "");//(int)(System.currentTimeMillis() % 2000000000));
+        pstmt.setString(1,profil.username);
+        pstmt.setFloat(2,temp);
+        pstmt.setTimestamp(3,new Timestamp(time));
         int rows = pstmt.executeUpdate();
 
         if(rows > 0) {

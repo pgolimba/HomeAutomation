@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.autofill.AutofillValue;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -146,12 +148,12 @@ public class LightActivity extends AppCompatActivity {
         long time = currentTime.getTime();
 
 
-        String query = "INSERT INTO dbo.lumini VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO dbo.lumini(UserId, Stare, DateTime) VALUES ( ?, ?, ?)";
         PreparedStatement pstmt = sql.prepareStatement(query);
-        pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
-        pstmt.setString(2, profil.username);
-        pstmt.setInt(3, stare);
-        pstmt.setTimestamp(4, new Timestamp(time));
+        //pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
+        pstmt.setString(1, profil.username);
+        pstmt.setInt(2, stare);
+        pstmt.setTimestamp(3, new Timestamp(time));
 
         int rows = pstmt.executeUpdate();
 

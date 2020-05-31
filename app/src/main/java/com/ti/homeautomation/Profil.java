@@ -88,7 +88,7 @@ public class Profil {
         rs = sql.executeQuery("select * from [dbo].[user1]");
 
         while(rs.next()){
-            if(rs.getString("UserId").equals(userID) && rs.getString("Parola").equals(password)) {
+            if(rs.getString("UserID").equals(userID) && rs.getString("Parola").equals(password)) {
                 ret = true;
                 break;
             }
