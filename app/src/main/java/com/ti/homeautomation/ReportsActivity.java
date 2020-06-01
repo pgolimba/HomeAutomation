@@ -57,13 +57,13 @@ public class ReportsActivity extends AppCompatActivity {
                 Toast.makeText(parent.getContext(), "Ați selectat: " + item, Toast.LENGTH_SHORT).show();
 
                 if (parent.getItemAtPosition(position).equals("Raport pentru acces")) {
-                    results = GetReport("SELECT * FROM tabel");
+                   // results = GetReport("SELECT FROM stari_arduino");
                 }
                 if (parent.getItemAtPosition(position).equals("Raport de temperatură")) {
-
+                    results = GetReport("SELECT id, temperatura1 FROM stari_arduino");
                 }
                 if (parent.getItemAtPosition(position).equals("Raport de lumini")) {
-
+                    results = GetReport("SELECT id, s_lumina FROM stari_arduino");
                 }
 
                 ArrayAdapter<String> listArray = new ArrayAdapter<String>(parent.getContext(), R.layout.listview_item, results);
@@ -118,9 +118,9 @@ public class ReportsActivity extends AppCompatActivity {
             ResultSet rs = sql.executeQuery(query);
 
             while (rs.next()) {
-                String row = "";
+                String row = " ";
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    row += rs.getString(i);
+                    row += "|" + rs.getString(i);
                 }
                 results.add(row);
             }
