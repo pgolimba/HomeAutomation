@@ -33,7 +33,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
@@ -85,13 +85,14 @@
             android:inputType="text"
             android:layout_gravity="center"
             android:textAlignment="center"
-            android:text="" />
+            android:text=""
+            android:textSize="15dp"/>
 
 
         <LinearLayout
             android:layout_width="315dp"
             android:layout_height="67dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center">
 
             <Button
@@ -136,27 +137,10 @@
 
         <Spinner
             android:id="@+id/programuldorit"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp" />
-        <Button
-            android:id="@+id/btn_setprogram"
-            android:layout_width="150dp"
-            android:layout_height="37dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/btn_bg"
-            android:text="Setează   programul"
-            android:textColor="@color/colorAccent" />
-
-        <TextView
-            android:id="@+id/progales"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/colorAccent"
-            android:layout_gravity="center"/>
 
         <!-- <LinearLayout
              android:layout_width="315dp"

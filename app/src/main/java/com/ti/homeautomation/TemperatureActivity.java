@@ -31,16 +31,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class TemperatureActivity extends AppCompatActivity {
 
     private Profil profil = Profil.getInstance();
     ImageView back2;
     Spinner mySpinner2;
-    TextView tempActuala,programAles;
+    TextView tempActuala;
     EditText tempDorita;
-    Button setTemp,anulareTemp,setProgram;
+    Button setTemp,anulareTemp;
+
+    //String record="";
 
 
 
@@ -57,9 +61,6 @@ public class TemperatureActivity extends AppCompatActivity {
         tempDorita=findViewById(R.id.tempdorita);
         setTemp=findViewById(R.id.btn_settemperatura);
         anulareTemp=findViewById(R.id.btn_anulare1);
-        setProgram=findViewById(R.id.btn_setprogram);
-        programAles=findViewById(R.id.progales);
-
 
 
         //Alegerea programului
@@ -69,18 +70,46 @@ public class TemperatureActivity extends AppCompatActivity {
         mySpinner2.setAdapter(myAdapter);
 
         mySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
-                    programAles.setText("A fost selectat programul 'Weekend'!");
+                if (parent.getItemAtPosition(position).equals("Alegeți programul dorit"))
+                {
+                    //do nothing
                 }
-                if (position == 1) {
-                    programAles.setText("A fost selectat programul 'Concediu'!");
-                }
-                if(position == 2){
-                    programAles.setText("A fost selectat programul 'Zi de lucru'!");
-                }
+                else
+                {
+                    String item =parent.getItemAtPosition(position).toString();
+                    Toast.makeText(parent.getContext(),"Ați selectat programul: " + item, Toast.LENGTH_SHORT).show();
+                    if(parent.getItemAtPosition(position).equals("Weekend"))
+                    {
 
+                        try {
+                            TemperatureActivityInsert((float) 22.5);
+                            Toast.makeText(parent.getContext(),"Temperatura a fost setată la 22.5 °C",Toast.LENGTH_LONG).show();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(parent.getItemAtPosition(position).equals("Concediu"))
+                    {
+                        try {
+                            TemperatureActivityInsert((float) 21);
+                            Toast.makeText(parent.getContext(),"Temperatura a fost setată la 21 °C",Toast.LENGTH_LONG).show();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(parent.getItemAtPosition(position).equals("Zi de lucru"))
+                    {
+                        try {
+                            TemperatureActivityInsert((float) 23.5);
+                            Toast.makeText(parent.getContext(),"Temperatura a fost setată la 23.5 °C",Toast.LENGTH_LONG).show();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
 
             @Override
@@ -129,10 +158,10 @@ public class TemperatureActivity extends AppCompatActivity {
             ResultSet rs = null;
             sql = DbConnection.connectionclass();
             Statement st = sql.createStatement();
-            String query = ("SELECT TOP 1 * FROM dbo.temp_app ORDER BY Id DESC");
+            String query = ("SELECT TOP 1 * FROM dbo.stari_arduino ORDER BY id DESC");
             rs = st.executeQuery(query);
             if (rs.next()) {
-                String temp = rs.getString("SetedTemp");
+                String temp = rs.getString("temperatura1");
                 tempActuala.setText(temp+" °C");
                 sql.close();
             }
@@ -174,12 +203,12 @@ public class TemperatureActivity extends AppCompatActivity {
         long time = currentTime.getTime();
 
 
-        String query = ("INSERT INTO dbo.temp_app VALUES (?,?,?,?)");
+        String query = ("INSERT INTO dbo.temp_app(UserId, SetedTemp, DateTime) VALUES (?,?,?)");
         PreparedStatement pstmt = sql.prepareStatement(query);
-        pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
-        pstmt.setString(2,profil.username);
-        pstmt.setFloat(3,temp);
-        pstmt.setTimestamp(4,new Timestamp(time));
+        //pstmt.setInt(1, "");//(int)(System.currentTimeMillis() % 2000000000));
+        pstmt.setString(1,profil.username);
+        pstmt.setFloat(2,temp);
+        pstmt.setTimestamp(3,new Timestamp(time));
         int rows = pstmt.executeUpdate();
 
         if(rows > 0) {

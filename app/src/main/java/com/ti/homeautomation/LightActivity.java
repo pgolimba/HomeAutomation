@@ -3,14 +3,18 @@ package com.ti.homeautomation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.icu.util.Calendar;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.autofill.AutofillValue;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -20,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 
 public class LightActivity extends AppCompatActivity {
@@ -30,7 +35,7 @@ public class LightActivity extends AppCompatActivity {
     ImageView back;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_light);
@@ -38,6 +43,7 @@ public class LightActivity extends AppCompatActivity {
         textStare=findViewById(R.id.textstarelumini);
         aSwitch=findViewById(R.id.switch1);
         back=findViewById(R.id.backicon);
+
 
         try {
             int st_act=LightActivitySelect();
@@ -52,6 +58,7 @@ public class LightActivity extends AppCompatActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
 
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -71,10 +78,12 @@ public class LightActivity extends AppCompatActivity {
             }
         });
 
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(LightActivity.this,ControlActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -102,6 +111,7 @@ public class LightActivity extends AppCompatActivity {
         t.start();
 
     }
+
     public int LightActivitySelect() throws SQLException {
         Connection con = DbConnection.connectionclass();
         Statement sql;
@@ -115,7 +125,7 @@ public class LightActivity extends AppCompatActivity {
         // pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
         //pstmt.setString(1, profil.username);
 
-       // rs = sql.executeQuery();
+        // rs = sql.executeQuery();
 
         if(rs.next()) {
 
@@ -132,15 +142,18 @@ public class LightActivity extends AppCompatActivity {
         boolean ok = false;
         sql = DbConnection.connectionclass();
 
+        java.util.Calendar calendar = Calendar.getInstance();
+        java.util.Date currentTime = calendar.getTime();
 
-        String query = "INSERT INTO dbo.lumini  VALUES (?, ?, ?, ?)";
+        long time = currentTime.getTime();
+
+
+        String query = "INSERT INTO dbo.lumini(UserId, Stare, DateTime) VALUES ( ?, ?, ?)";
         PreparedStatement pstmt = sql.prepareStatement(query);
-        pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
-        pstmt.setString(2, profil.username);
-        //pstmt.setString(2, "stare");
-          pstmt.setInt(3, stare);
-          pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
-//        pstmt.setDate(5, new java.sql.Date(System.currentTimeMillis()));
+        //pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
+        pstmt.setString(1, profil.username);
+        pstmt.setInt(2, stare);
+        pstmt.setTimestamp(3, new Timestamp(time));
 
         int rows = pstmt.executeUpdate();
 

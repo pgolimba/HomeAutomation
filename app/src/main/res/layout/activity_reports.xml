@@ -61,15 +61,6 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp" />
-        <Button
-            android:id="@+id/btn_genrapoarte"
-            android:layout_width="150dp"
-            android:layout_height="37dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/btn_bg"
-            android:text="Generare"
-            android:textColor="@color/colorAccent" />
 
         <!--<LinearLayout
             android:layout_width="315dp"
