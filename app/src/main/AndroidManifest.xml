@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LockActivity" />
-        <activity android:name=".ReportsActivity" />
         <activity android:name=".TemperatureActivity" />
         <activity android:name=".LightActivity" />
         <activity android:name=".ControlActivity" />

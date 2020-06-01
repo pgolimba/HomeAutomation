@@ -44,8 +44,6 @@ public class TemperatureActivity extends AppCompatActivity {
     EditText tempDorita;
     Button setTemp,anulareTemp;
 
-    //String record="";
-
 
 
 
@@ -133,6 +131,9 @@ public class TemperatureActivity extends AppCompatActivity {
                 tempDorita.setText("");
             }
         });
+
+
+        //Satare temperatura
 
         setTemp.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +42,7 @@ public class LockActivity extends AppCompatActivity {
     private TextView titleTextView;
     private ProgressBar progressCircle;
     private ListView listView;
+    private ImageView back;
     private Switch aSwitch;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket mBTSocket;
@@ -62,7 +65,39 @@ public class LockActivity extends AppCompatActivity {
         progressCircle = (ProgressBar) findViewById(R.id.progressBar);
         listView = (ListView) findViewById(R.id.listView);
         aSwitch = (Switch) findViewById(R.id.door);
+        back=(ImageView) findViewById(R.id.backicon4);
         getUUID();
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LockActivity.this,ControlActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //Data si timp
+        Thread t = new Thread() {
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextView tdate1 = (TextView) findViewById(R.id.date4);
+                                long date = System.currentTimeMillis();
+                                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
+                                String dateString = sdf.format(date);
+                                tdate1.setText(dateString);
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        t.start();
 
         mHandler = new Handler() {
             public void handleMessage(android.os.Message msg) {

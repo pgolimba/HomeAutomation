@@ -1,7 +1,6 @@
 package com.ti.homeautomation;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +15,7 @@ import android.widget.Toast;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
-public class ReportsActivity extends AppCompatActivity {
+public class ReportsActivity extends Activity {
     ImageView back1;
     Spinner mySpinner;
 
@@ -49,21 +48,21 @@ public class ReportsActivity extends AppCompatActivity {
                     Toast.makeText(parent.getContext(),"Ați selectat: " + item, Toast.LENGTH_SHORT).show();
                     if(parent.getItemAtPosition(position).equals("Raport pentru acces"))
                     {
-                        Intent intent = new Intent(ReportsActivity.this, ReportAcces.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(ReportsActivity.this, ReportAcces.class);
+                        //startActivity(intent);
                     }
                     if(parent.getItemAtPosition(position).equals("Raport de temperatură"))
                     {
-                        Intent intent = new Intent(ReportsActivity.this, ReportTemp.class);
-                        startActivity(intent);
-                    }
-                    }
-                    if(parent.getItemAtPosition(position).equals("Raport de lumini"))
-                    {
-                        Intent intent = new Intent(ReportsActivity.this, ReportLights.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(ReportsActivity.this, ReportTemp.class);
+                        //startActivity(intent);
                     }
                 }
+                if(parent.getItemAtPosition(position).equals("Raport de lumini"))
+                {
+                    //Intent intent = new Intent(ReportsActivity.this, ReportLights.class);
+                    //startActivity(intent);
+                }
+            }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -104,3 +103,4 @@ public class ReportsActivity extends AppCompatActivity {
         t.start();
     }
 }
+
