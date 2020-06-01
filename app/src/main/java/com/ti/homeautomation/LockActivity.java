@@ -355,9 +355,17 @@ public class LockActivity extends AppCompatActivity {
         private String read(int len) {
             byte[] bytes = new byte[len];
             int n = 0;
-
             try {
-                n = mmInStream.read(bytes);
+                while (n < len) {
+                    int available = mmInStream.available();
+                    if (available > 0) {
+                        int ret = mmInStream.read(bytes, n, available);
+                        if (ret < 0) {
+                            break;
+                        }
+                        n += ret;
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
