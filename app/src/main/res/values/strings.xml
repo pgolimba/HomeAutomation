@@ -3,8 +3,9 @@
 
 
     <string-array name="rapoarte">
+        <item>Alegeți raportul dorit</item>
         <item>Raport pentru acces</item>
-        <item>Raport de temperatura</item>
+        <item>Raport de temperatură</item>
         <item>Raport de lumini</item>
     </string-array>
 
