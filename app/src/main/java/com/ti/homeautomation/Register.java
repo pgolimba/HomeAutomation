@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -15,6 +16,9 @@ public class Register extends AppCompatActivity {
     //Variabile
     TextInputLayout regLname,regFname,regEmail,regUsername,regPassword;
     Button regBtn,regCancelBtn;
+
+    private long backPressedTime;
+    private Toast backToast;
 
     //FirebaseDatabase rootNode;
     //DatabaseReference reference;
@@ -145,6 +149,17 @@ public class Register extends AppCompatActivity {
         }
 
 
+    }
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 
     //Salvarea datelor in FireBase apasand butonul "Continuare"

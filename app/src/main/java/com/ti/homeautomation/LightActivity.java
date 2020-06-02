@@ -34,26 +34,29 @@ public class LightActivity extends AppCompatActivity {
     Switch aSwitch;
     ImageView back;
 
+    private long backPressedTime;
+    private Toast backToast;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_light);
 
-        textStare=findViewById(R.id.textstarelumini);
-        aSwitch=findViewById(R.id.switch1);
-        back=findViewById(R.id.backicon);
+        textStare = findViewById(R.id.textstarelumini);
+        aSwitch = findViewById(R.id.switch1);
+        back = findViewById(R.id.backicon);
 
 
         try {
-            int st_act=LightActivitySelect();
-            if(st_act==1) {
+            boolean st_act=LightActivitySelect();
+            if(st_act==true) {
                 aSwitch.setChecked(true);
-                textStare.setText("Lumina este aprinsă!");
+                Toast.makeText(getApplicationContext(), "Lumina este aprinsă!", Toast.LENGTH_LONG).show();
             }
             else {
                 aSwitch.setChecked(false);
-                textStare.setText("Lumina este stinsă!");
+                Toast.makeText(getApplicationContext(), "Lumina este stinsă!", Toast.LENGTH_LONG).show();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,12 +68,16 @@ public class LightActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 try {
                     if (aSwitch.isChecked()) {
-                        textStare.setText("Lumina este aprinsă!");
+
                         String input1 = textStare.getText().toString();
                         LightActivityInsert(1);
+                        //LightActivitySelect();
+                        textStare.setText("Lumina se va aprinde!");
                     } else {
-                        textStare.setText("Lumina este stinsă!");
+
                         LightActivityInsert(0);
+                        //LightActivitySelect();
+                        textStare.setText("Lumina se va stinge!");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -112,14 +119,14 @@ public class LightActivity extends AppCompatActivity {
 
     }
 
-    public int LightActivitySelect() throws SQLException {
+    public boolean LightActivitySelect() throws SQLException {
         Connection con = DbConnection.connectionclass();
         Statement sql;
         sql = con.createStatement();
-        int ok = -1;
+        boolean ok = false;
 
         ResultSet rs;
-        rs = sql.executeQuery("SELECT TOP 1 * FROM dbo.lumini ORDER BY Id DESC");
+        rs = sql.executeQuery("SELECT TOP 1 s_lumina FROM dbo.stari_arduino ORDER BY Id DESC");
 
         //PreparedStatement pstmt = sql.prepareStatement(query);
         // pstmt.setInt(1, (int)(System.currentTimeMillis() % 2000000000));
@@ -129,7 +136,7 @@ public class LightActivity extends AppCompatActivity {
 
         if(rs.next()) {
 
-            ok = rs.getInt("stare");
+            ok = rs.getBoolean("s_lumina");
         }
 
         sql.close();
@@ -164,5 +171,16 @@ public class LightActivity extends AppCompatActivity {
         sql.close();
 
         return ok;
+    }
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }

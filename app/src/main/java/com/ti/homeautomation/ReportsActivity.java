@@ -28,6 +28,9 @@ public class ReportsActivity extends AppCompatActivity {
     Spinner mySpinner;
     ListView listView;
 
+    private long backPressedTime;
+    private Toast backToast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +60,13 @@ public class ReportsActivity extends AppCompatActivity {
                 Toast.makeText(parent.getContext(), "Ați selectat: " + item, Toast.LENGTH_SHORT).show();
 
                 if (parent.getItemAtPosition(position).equals("Raport pentru acces")) {
-                   // results = GetReport("SELECT FROM stari_arduino");
+                    results = GetReport("SELECT id, UserId, DateTime FROM intrare");
                 }
                 if (parent.getItemAtPosition(position).equals("Raport de temperatură")) {
-                    results = GetReport("SELECT id, temperatura1 FROM stari_arduino");
+                    results = GetReport("SELECT id, temperatura2, data1 FROM stari_arduino");
                 }
                 if (parent.getItemAtPosition(position).equals("Raport de lumini")) {
-                    results = GetReport("SELECT id, s_lumina FROM stari_arduino");
+                    results = GetReport("SELECT Id, Stare, DateTime FROM lumini");
                 }
 
                 ArrayAdapter<String> listArray = new ArrayAdapter<String>(parent.getContext(), R.layout.listview_item, results);
@@ -120,7 +123,7 @@ public class ReportsActivity extends AppCompatActivity {
             while (rs.next()) {
                 String row = " ";
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    row += "|" + rs.getString(i);
+                    row += "      " + rs.getString(i);
                 }
                 results.add(row);
             }
@@ -131,5 +134,16 @@ public class ReportsActivity extends AppCompatActivity {
         }
 
         return results;
+    }
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }

@@ -39,10 +39,12 @@ public class TemperatureActivity extends AppCompatActivity {
 
     private Profil profil = Profil.getInstance();
     ImageView back2;
-    Spinner mySpinner2;
     TextView tempActuala;
-    EditText tempDorita;
-    Button setTemp,anulareTemp;
+    EditText tempDorita,tempWeek;
+    Button setTemp,anulareTemp,btnWeek,btnanulareWeek;
+
+    private long backPressedTime;
+    private Toast backToast;
 
 
 
@@ -54,67 +56,14 @@ public class TemperatureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_temperature);
 
         back2=findViewById(R.id.backicon2);
-        mySpinner2=findViewById(R.id.programuldorit);
         tempActuala=findViewById(R.id.tempactuala);
         tempDorita=findViewById(R.id.tempdorita);
         setTemp=findViewById(R.id.btn_settemperatura);
         anulareTemp=findViewById(R.id.btn_anulare1);
+        tempWeek=findViewById(R.id.tempweekend);
+        btnWeek=findViewById(R.id.btn_settemperatura2);
+        btnanulareWeek=findViewById(R.id.btn_anulare2);
 
-
-        //Alegerea programului
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(TemperatureActivity.this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.program));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner2.setAdapter(myAdapter);
-
-        mySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getItemAtPosition(position).equals("Alegeți programul dorit"))
-                {
-                    //do nothing
-                }
-                else
-                {
-                    String item =parent.getItemAtPosition(position).toString();
-                    Toast.makeText(parent.getContext(),"Ați selectat programul: " + item, Toast.LENGTH_SHORT).show();
-                    if(parent.getItemAtPosition(position).equals("Weekend"))
-                    {
-
-                        try {
-                            TemperatureActivityInsert((float) 22.5);
-                            Toast.makeText(parent.getContext(),"Temperatura a fost setată la 22.5 °C",Toast.LENGTH_LONG).show();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    if(parent.getItemAtPosition(position).equals("Concediu"))
-                    {
-                        try {
-                            TemperatureActivityInsert((float) 21);
-                            Toast.makeText(parent.getContext(),"Temperatura a fost setată la 21 °C",Toast.LENGTH_LONG).show();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    if(parent.getItemAtPosition(position).equals("Zi de lucru"))
-                    {
-                        try {
-                            TemperatureActivityInsert((float) 23.5);
-                            Toast.makeText(parent.getContext(),"Temperatura a fost setată la 23.5 °C",Toast.LENGTH_LONG).show();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
 
         //Intoarcerea in meniul principal de control
@@ -133,19 +82,29 @@ public class TemperatureActivity extends AppCompatActivity {
         });
 
 
+        btnanulareWeek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    tempDorita.setText("");
+            }
+        });
+
+
+
+
         //Satare temperatura
 
         setTemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!validatetemp1()){ return;}
                 Connection sql = DbConnection.connectionclass();
                 Float temp = Float.valueOf(tempDorita.getText().toString());
                 try {
-                    if(TemperatureActivityInsert(temp)) {
-                        Toast.makeText(getApplicationContext(), "Temperatura a fost modificată cu succes!", Toast.LENGTH_SHORT).show();
-                        //tempActuala.setText(temp + " °C");
-                    }
-                    else Toast.makeText(getApplicationContext(), "Temperatura nu s-a modificat!",Toast.LENGTH_SHORT).show();
+                        if (TemperatureActivityInsert(temp)) {
+                            Toast.makeText(getApplicationContext(), "Temperatura a fost setată cu succes!", Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(getApplicationContext(), "Temperatura nu s-a setat!", Toast.LENGTH_SHORT).show();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -154,6 +113,22 @@ public class TemperatureActivity extends AppCompatActivity {
             }
         });
 
+        btnWeek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!validatetemp2()){ return;}
+                Connection sql = DbConnection.connectionclass();
+                Float temp2 = Float.valueOf(tempWeek.getText().toString());
+                try {
+                    if(TemperatureActivityInsert2(temp2)) {
+                        Toast.makeText(getApplicationContext(), "Temperatura a fost setată cu succes!", Toast.LENGTH_SHORT).show();
+                    }
+                    else Toast.makeText(getApplicationContext(), "Temperatura nu s-a setat!",Toast.LENGTH_SHORT).show();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         try {
             Connection sql;
             ResultSet rs = null;
@@ -162,7 +137,7 @@ public class TemperatureActivity extends AppCompatActivity {
             String query = ("SELECT TOP 1 * FROM dbo.stari_arduino ORDER BY id DESC");
             rs = st.executeQuery(query);
             if (rs.next()) {
-                String temp = rs.getString("temperatura1");
+                String temp = rs.getString("temperatura2");
                 tempActuala.setText(temp+" °C");
                 sql.close();
             }
@@ -204,12 +179,12 @@ public class TemperatureActivity extends AppCompatActivity {
         long time = currentTime.getTime();
 
 
-        String query = ("INSERT INTO dbo.temp_app(UserId, SetedTemp, DateTime) VALUES (?,?,?)");
+        String query = ("UPDATE dbo.program set USerId=?,ciclu_zi=? where zi_sapt!='weekend'");
         PreparedStatement pstmt = sql.prepareStatement(query);
         //pstmt.setInt(1, "");//(int)(System.currentTimeMillis() % 2000000000));
         pstmt.setString(1,profil.username);
         pstmt.setFloat(2,temp);
-        pstmt.setTimestamp(3,new Timestamp(time));
+        //pstmt.setTimestamp(3,new Timestamp(time));
         int rows = pstmt.executeUpdate();
 
         if(rows > 0) {
@@ -219,5 +194,65 @@ public class TemperatureActivity extends AppCompatActivity {
         sql.close();
 
         return ok;
+    }
+
+    public boolean TemperatureActivityInsert2 (Float temp) throws SQLException {
+        Connection sql = DbConnection.connectionclass();
+        boolean ok = false;
+
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date currentTime = calendar.getTime();
+
+        long time = currentTime.getTime();
+
+
+        String query = ("UPDATE dbo.program set USerId=?,ciclu_zi=? where zi_sapt='weekend'");
+        PreparedStatement pstmt = sql.prepareStatement(query);
+        //pstmt.setInt(1, "");//(int)(System.currentTimeMillis() % 2000000000));
+        pstmt.setString(1,profil.username);
+        pstmt.setFloat(2,temp);
+        //pstmt.setTimestamp(3,new Timestamp(time));
+        int rows = pstmt.executeUpdate();
+
+        if(rows > 0) {
+            ok = true;
+        }
+
+        sql.close();
+
+        return ok;
+    }
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+    private Boolean validatetemp1() {
+        String val = tempDorita.getText().toString();
+
+        if (val.isEmpty()) {
+            tempDorita.setError("Acest câmp trebuie completat!");
+            return false;
+        } else {
+            tempDorita.setError(null);
+            return true;
+        }
+    }
+    private Boolean validatetemp2() {
+        String val = tempWeek.getText().toString();
+
+        if (val.isEmpty()) {
+            tempWeek.setError("Acest câmp trebuie completat!");
+            return false;
+        } else {
+            tempWeek.setError(null);
+            return true;
+        }
     }
 }

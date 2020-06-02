@@ -1,5 +1,6 @@
 package com.ti.homeautomation;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import android.app.DownloadManager;
@@ -9,7 +10,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.IDNA;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.textclassifier.ConversationActions;
@@ -35,7 +38,8 @@ public class Login extends AppCompatActivity {
     Button callRegister,loginBtn;
     ImageView image;
     TextInputLayout username,password;
-    TextView Info;
+    //TextView Info;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +104,7 @@ public class Login extends AppCompatActivity {
             }
         };
         t.start();
+        onBackPressed();
     }
 
     public void startControlActivity()
@@ -108,6 +113,9 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onBackPressed() {
+       //
+    }
 
     //Validare date
    /* private void validate (String userName, String userPassword){
