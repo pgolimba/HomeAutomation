@@ -129,10 +129,14 @@ public class LockActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (aSwitch.isChecked()) {
-                    mConnectThread.setDoorRequest(true);
+                    mConnectThread.write("SET_DOOR#FLIP#NO_TIMEOUT#");
+                }
+                    /*mConnectThread.setDoorRequest(true);
                 } else {
                     mConnectThread.setDoorRequest(false);
                 }
+                */
+
             }
         });
     }
@@ -356,20 +360,23 @@ public class LockActivity extends AppCompatActivity {
             byte[] bytes = new byte[len];
             int n = 0;
             try {
-                while (n < len) {
+                //while (n < len) {
                     int available = mmInStream.available();
                     if (available > 0) {
-                        int ret = mmInStream.read(bytes, n, available);
-                        if (ret < 0) {
+                        int ret = mmInStream.read(bytes, 0, available);
+                        return new String(bytes);
+
+                       /* if (ret < 0) {
                             break;
                         }
                         n += ret;
-                    }
+                    }*/
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return new String(bytes);
+            return null;
+            //return new String(bytes);
         }
 
         public void setDoorRequest(boolean stare) {
@@ -400,7 +407,7 @@ public class LockActivity extends AppCompatActivity {
 //            resp = read(1);
 //            stareUsa = (Integer.parseInt(resp) != 0);
 
-            Log.d(TAG, "Stare usa");
+           /* Log.d(TAG, "Stare usa");
             aSwitch.setChecked(stareUsa);
             // Keep listening to the InputStream until an exception occurs
             while (true) {
@@ -417,7 +424,7 @@ public class LockActivity extends AppCompatActivity {
                     doorRequest = false;
                 }
                 SystemClock.sleep(100);
-            }
+            }*/
         }
     }
 }
