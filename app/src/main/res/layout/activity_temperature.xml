@@ -81,7 +81,7 @@
             android:id="@+id/tempdorita"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             android:layout_gravity="center"
             android:textAlignment="center"
             android:text=""
@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             android:text=""
             android:textAlignment="center"
             android:textSize="15dp" />

@@ -235,7 +235,6 @@ public class TemperatureActivity extends AppCompatActivity {
     }
     private Boolean validatetemp1() {
         String val = tempDorita.getText().toString();
-
         if (val.isEmpty()) {
             tempDorita.setError("Acest câmp trebuie completat!");
             return false;
@@ -246,7 +245,6 @@ public class TemperatureActivity extends AppCompatActivity {
     }
     private Boolean validatetemp2() {
         String val = tempWeek.getText().toString();
-
         if (val.isEmpty()) {
             tempWeek.setError("Acest câmp trebuie completat!");
             return false;
