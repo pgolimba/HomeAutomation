@@ -85,7 +85,7 @@ public class TemperatureActivity extends AppCompatActivity {
         btnanulareWeek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    tempDorita.setText("");
+                    tempWeek.setText("");
             }
         });
 
